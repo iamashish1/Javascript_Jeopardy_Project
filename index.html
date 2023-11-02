@@ -3,75 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/main.css" />
     <title>Jeopardy Game</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      #jeopardy-board {
+        display: flex;
+      }
+
+      .category {
+        margin: 0 20px;
+      }
+
+      .question {
+        background-color: #1f1f7e;
+        border: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        height: 70px;
+        color: #c59d0a;
+        font-weight: 900;
+        font-size: 20px;
+        user-select: none;
+      }
+      /* Apply hover effect only to elements with the class .question (excluding .categoryName) */
+      .question:not(.categoryName):hover {
+        border: #c59d0a solid 4px;
+      }
+    </style>
   </head>
   <body>
-    <header>
-      <h1>Jeopardy Game</h1>
-    </header>
-
-    <section>
-      <!-- Category 1 -->
-      <div class="category">
-        <div class="question categoryName">Category 1</div>
-        <div class="question">$100</div>
-        <div class="question">$200</div>
-        <div class="question">$300</div>
-        <div class="question">$400</div>
-        <div class="question">$500</div>
-      </div>
-
-      <!-- Category 2 -->
-      <div class="category">
-        <div class="question categoryName">Category 2</div>
-        <div class="question">$100</div>
-        <div class="question">$200</div>
-        <div class="question">$300</div>
-        <div class="question">$400</div>
-        <div class="question">$500</div>
-      </div>
-
-      <!-- Category 3 -->
-      <div class="category">
-        <div class="question categoryName">Category 3</div>
-        <div class="question">$100</div>
-        <div class="question">$200</div>
-        <div class="question">$300</div>
-        <div class="question">$400</div>
-        <div class="question">$500</div>
-      </div>
-
-      <!-- Category 4-->
-      <div class="category">
-        <div class="question categoryName">Category 4</div>
-        <div class="question">$100</div>
-        <div class="question">$200</div>
-        <div class="question">$300</div>
-        <div class="question">$400</div>
-        <div class="question">$500</div>
-      </div>
-
-      <!-- Category 5 -->
-      <div class="category">
-        <div class="question categoryName">Category 5</div>
-        <div class="question">$100</div>
-        <div class="question">$200</div>
-        <div class="question">$300</div>
-        <div class="question">$400</div>
-        <div class="question">$500</div>
-      </div>
-
-      <!-- Category 6 -->
-      <div class="category">
-        <div class="question categoryName">Category 6</div>
-        <div class="question">$100</div>
-        <div class="question">$200</div>
-        <div class="question">$300</div>
-        <div class="question">$400</div>
-        <div class="question">$500</div>
-      </div>
-    </section>
-    <script src="js/ashish_nayeem.js"></script>
+    <div id="jeopardy-board"></div>
+    <script  type="module" src="js/ashish_nayeem.js"></script>
   </body>
 </html>

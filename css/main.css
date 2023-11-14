@@ -1,11 +1,53 @@
 * {
   box-sizing: border-box;
 }
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  transform: translate(-50%, -50%);
+  background-color: rgba(235, 229, 229, 0.5);
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+.covered-surface {
+  padding: 20px;
+  border-radius: 10px;
+  transition: opacity 0.5s ease;
+}
+
+.covered-surface button {
+  width: 100px;
+  height: 40px;
+  background-color: brown;
+  border: none;
+  color: rgb(230, 225, 225);
+}
+
+.modal-container.show-answer .covered-surface {
+  opacity: 0;
+}
+
+.modal-content {
+  text-align: center;
+}
+.modal-container button {
+  width: 100px;
+  height: 40px;
+  background-color: brown;
+  border: none;
+  color: rgb(230, 225, 225);
+}
 body {
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 header {
-  background-color: #333;
+  background-color: rgb(5, 5, 180);
   color: #fff;
   text-align: center;
   padding: 10px;
@@ -23,7 +65,7 @@ header {
 }
 
 .question {
-  background-color: #333;
+  background-color: rgb(6, 6, 196);
   border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
@@ -37,7 +79,6 @@ header {
   font-size: 20px;
   user-select: none;
 }
-/* Apply hover effect only to elements with the class .question (excluding .categoryName) */
 .question:not(.categoryName):hover {
   border: #c59d0a solid 4px;
 }
@@ -48,8 +89,8 @@ header {
   font-size: 25px;
 }
 .loader-container {
- display: flex;
- justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 .spinner {
   width: 64px;
@@ -62,9 +103,9 @@ header {
 
 @keyframes spin-anim {
   0% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }

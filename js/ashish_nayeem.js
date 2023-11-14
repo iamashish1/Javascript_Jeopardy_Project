@@ -4,17 +4,54 @@ import Question from "./model/question_model.js";
 document.addEventListener("DOMContentLoaded", function () {
   let categories;
   let questionsArray = [];
-  //ALERT BOX
-  function showQuestionWithInstruction(question, answer) {
-    const answerButton = document.createElement("button");
-    answerButton.textContent = "Show Answer";
-    answerButton.classList.add("answer-button");
-    alert(`Question: ${question}\n`);
-    document
-      .getElementsByClassName("answer-button")
-      .addEventListener("onclick", () => {});
-  }
+
   //FINISHED ALERT BOX
+  // MODAL BOX
+  function showQuestionWithInstruction(question, answer) {
+    // Create a modal container
+    const modalContainer = document.createElement("div");
+    modalContainer.classList.add("modal-container");
+
+    // Create modal content
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
+
+    // Create elements to display question and answer
+    const questionElement = document.createElement("p");
+    questionElement.textContent = `Question: ${question}`;
+
+    // Create covered surface with "Show Answer" button
+    const coveredSurface = document.createElement("div");
+    coveredSurface.classList.add("covered-surface");
+
+    const showAnswerButton = document.createElement("button");
+    showAnswerButton.textContent = "Show Answer";
+    showAnswerButton.addEventListener("click", () => {
+      // Replace covered surface with the answer
+      coveredSurface.innerHTML = `<p>Answer: ${answer}</p>`;
+    });
+
+    // Create a button to close the modal
+    const closeButton = document.createElement("button");
+    closeButton.textContent = "Close";
+    closeButton.addEventListener("click", () => {
+      modalContainer.remove();
+    });
+
+    coveredSurface.appendChild(showAnswerButton);
+
+    // Append elements to modal content
+    modalContent.appendChild(questionElement);
+    modalContent.appendChild(coveredSurface);
+    modalContent.appendChild(closeButton);
+
+    // Append modal content to modal container
+    modalContainer.appendChild(modalContent);
+
+    // Append modal container to the body
+    document.body.appendChild(modalContainer);
+  }
+  // FINISHED MODAL BOX
 
   //BUILD JEOPARDY BOX
   function buildJeopardyBoard(categories, questions) {
@@ -85,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Fetch questions for each category
       const fetchQuestions = categories.map((category) =>
-        fetch(`https://jservice.io/api/clues?id=${category.id}`)
+        fetch(`https://jservice.io/api/clues?category=${category.id}`)
           .then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);

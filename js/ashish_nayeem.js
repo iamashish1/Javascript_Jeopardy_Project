@@ -7,7 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //FINISHED ALERT BOX
   // MODAL BOX
-  function showQuestionWithInstruction(question, answer) {
+  function showQuestionWithInstruction(question, answer, questionDiv) {
+    // Check if the question has already been clicked
+    if (questionDiv.classList.contains("question-clicked")) {
+      return;
+    }
+
     // Create a modal container
     const modalContainer = document.createElement("div");
     modalContainer.classList.add("modal-container");
@@ -29,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showAnswerButton.addEventListener("click", () => {
       // Replace covered surface with the answer
       coveredSurface.innerHTML = `<p>Answer: ${answer}</p>`;
+      questionDiv.classList.add("question-clicked");
     });
 
     // Create a button to close the modal
@@ -86,7 +92,11 @@ document.addEventListener("DOMContentLoaded", function () {
         questionDiv.textContent = `$${100 * (i + 1)}`;
         // Attach the showQuestion function to display the question and answer
         questionDiv.onclick = function () {
-          showQuestionWithInstruction(question.question, question.answer);
+          showQuestionWithInstruction(
+            question.question,
+            question.answer,
+            questionDiv
+          );
         };
 
         // Append the question div to the category div

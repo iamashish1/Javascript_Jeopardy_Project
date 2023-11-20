@@ -30,6 +30,11 @@
 .modal-container.show-answer .covered-surface {
   opacity: 0;
 }
+.question.question-highlighted {
+  background-color: #ffff00; /* Change this to the desired highlight color */
+  color: #000000; /* Change this to the desired text color */
+  /* Add any other styles you want for the highlighted state */
+}
 
 .modal-content {
   text-align: center;
@@ -45,9 +50,10 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #caf0f8;
 }
 header {
-  background-color: rgb(5, 5, 180);
+  background-color: #03045e;
   color: #fff;
   text-align: center;
   padding: 10px;
@@ -65,7 +71,7 @@ header {
 }
 
 .question {
-  background-color: rgb(6, 6, 196);
+  background-color: #023e8a;
   border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
@@ -79,9 +85,28 @@ header {
   font-size: 20px;
   user-select: none;
 }
-.question:not(.categoryName):hover {
+header {
+  display: flex;
+  align-items: center;
+}
+h1 {
+  margin: auto;
+}
+.question-clicked {
+  background-color: aliceblue;
+}
+
+img {
+  height: 70px;
+  width: 90px;
+}
+.question:not(.categoryName, .question-clicked):hover {
   border: #c59d0a solid 4px;
 }
+.question-clicked:hover {
+  cursor: default;
+}
+
 .categoryName {
   color: #ddd;
   cursor: default;

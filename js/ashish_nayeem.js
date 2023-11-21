@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //RESET BUTTON AND ALL
     const gameControlsDiv = document.createElement("div");
-    gameControlsDiv.style.width="150px"
+    gameControlsDiv.style.width = "150px";
     gameControlsDiv.style.marginLeft = "10px";
 
     gameControlsDiv.classList.add("control-div");
@@ -148,37 +148,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const playerName1 = document.createElement("input");
     playerName1.setAttribute("type", "text");
     playerName1.style.marginBottom = "10px";
-    playerName1.setAttribute("placeholder", "Enter player 1 name");
+    playerName1.setAttribute("placeholder", "Player 1");
 
     const playerName2 = document.createElement("input");
     playerName2.setAttribute("type", "text");
     playerName2.style.marginBottom = "10px";
 
-    playerName2.setAttribute("placeholder", "Enter player 2 name");
-
-    // Create an input element with type "submit"
-    const submitButton = document.createElement("input");
-    submitButton.setAttribute("type", "submit");
-    submitButton.setAttribute("value", "START");
-    submitButton.onclick = function () {
-      const player1Name = playerName1.value==''?"Unknown1":playerName1.value;
-      const player2Name = playerName2.value==''?"Unknown2":playerName2.value;
-
-      // Display the entered names
-
-      const playerNamesDiv= document.createElement('div');
-      playerNamesDiv.innerHTML=`${player1Name}\n VS ${player2Name}`
-
-   
-
-      // Remove input fields after displaying names
-      playerName1.remove();
-      playerName2.remove();
-      submitButton.remove();
-
-      //Append playernames div
-      gameControlsDiv.appendChild(playerNamesDiv);
-    };
+    playerName2.setAttribute("placeholder", "Player 2");
 
     resetButton.onclick = function () {
       if (isModalOpen) {
@@ -191,7 +167,6 @@ document.addEventListener("DOMContentLoaded", function () {
     gameControlsDiv.appendChild(resetButton);
     gameControlsDiv.appendChild(playerName1);
     gameControlsDiv.appendChild(playerName2);
-    gameControlsDiv.appendChild(submitButton);
 
     jeopardyBoard.appendChild(gameControlsDiv);
 

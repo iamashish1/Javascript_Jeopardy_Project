@@ -1,6 +1,8 @@
 import Category from "./model/category_model.js";
 import Question from "./model/question_model.js";
 
+// Add the variable here
+let isModalOpen = false;
 document.addEventListener("DOMContentLoaded", function () {
   let categories;
   let questionsArray = [];
@@ -12,6 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (questionDiv.classList.contains("question-clicked")) {
       return;
     }
+
+    document.getElementById("jeopardy-board").classList.add("modal-open");
+    // Set the modal state to open
+    isModalOpen = true;
+    // Add a temporary highlight class
+    questionDiv.classList.add("highlighted");
 
     // Create a modal container
     const modalContainer = document.createElement("div");
@@ -32,6 +40,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const showAnswerButton = document.createElement("button");
     showAnswerButton.textContent = "Show Answer";
     showAnswerButton.addEventListener("click", () => {
+      // document.getElementById("jeopardy-board").classList.remove("modal-open");
+      // Set the modal state to closed
+      // Remove the highlight class when the answer is shown
+      questionDiv.classList.remove("highlighted");
       // Replace covered surface with the answer
       coveredSurface.innerHTML = `<p>Answer: ${answer}</p>`;
       questionDiv.classList.add("question-clicked");
@@ -41,6 +53,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeButton = document.createElement("button");
     closeButton.textContent = "Close";
     closeButton.addEventListener("click", () => {
+      document.getElementById("jeopardy-board").classList.remove("modal-open");
+      // Set the modal state to closed
+      isModalOpen = false;
+      // Remove the highlight class when the answer is shown
+      questionDiv.classList.remove("highlighted");
       modalContainer.remove();
     });
 
@@ -61,9 +78,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //BUILD JEOPARDY BOX
   function buildJeopardyBoard(categories, questions) {
-    console.log("Success fetching data:", questions);
-    console.log("Success fetching data:", categories);
-
     const jeopardyBoard = document.getElementById("jeopardy-board");
 
     // Loop through categories
@@ -91,20 +105,97 @@ document.addEventListener("DOMContentLoaded", function () {
         questionDiv.classList.add("question");
         questionDiv.textContent = `$${100 * (i + 1)}`;
         // Attach the showQuestion function to display the question and answer
+
         questionDiv.onclick = function () {
-          showQuestionWithInstruction(
-            question.question,
-            question.answer,
-            questionDiv
-          );
+          if (!isModalOpen) {
+            showQuestionWithInstruction(
+              question.question,
+              question.answer,
+              questionDiv
+            );
+          }
         };
 
         // Append the question div to the category div
         categoryDiv.appendChild(questionDiv);
       }
+
       // Append the category div to the Jeopardy board
       jeopardyBoard.appendChild(categoryDiv);
+      //APPEND RESET BUTTON
     });
+
+    //RESET BUTTON AND ALL
+    const gameControlsDiv = document.createElement("div");
+    gameControlsDiv.style.width="150px"
+    gameControlsDiv.style.marginLeft = "10px";
+
+    gameControlsDiv.classList.add("control-div");
+    gameControlsDiv.style.display = "flex";
+    gameControlsDiv.style.flexDirection = "column";
+    const resetButton = document.createElement("button");
+    resetButton.innerHTML = "RESET";
+    resetButton.style.height = "50px";
+    resetButton.style.width = "100px";
+    resetButton.style.background = "purple";
+    resetButton.style.color = "white";
+    resetButton.style.marginBottom = "10px";
+
+    resetButton.style.borderRadius = "5px";
+    resetButton.style.border = "none";
+
+    //create input fields for player names
+    const playerName1 = document.createElement("input");
+    playerName1.setAttribute("type", "text");
+    playerName1.style.marginBottom = "10px";
+    playerName1.setAttribute("placeholder", "Enter player 1 name");
+
+    const playerName2 = document.createElement("input");
+    playerName2.setAttribute("type", "text");
+    playerName2.style.marginBottom = "10px";
+
+    playerName2.setAttribute("placeholder", "Enter player 2 name");
+
+    // Create an input element with type "submit"
+    const submitButton = document.createElement("input");
+    submitButton.setAttribute("type", "submit");
+    submitButton.setAttribute("value", "START");
+    submitButton.onclick = function () {
+      const player1Name = playerName1.value==''?"Unknown1":playerName1.value;
+      const player2Name = playerName2.value==''?"Unknown2":playerName2.value;
+
+      // Display the entered names
+
+      const playerNamesDiv= document.createElement('div');
+      playerNamesDiv.innerHTML=`${player1Name}\n VS ${player2Name}`
+
+   
+
+      // Remove input fields after displaying names
+      playerName1.remove();
+      playerName2.remove();
+      submitButton.remove();
+
+      //Append playernames div
+      gameControlsDiv.appendChild(playerNamesDiv);
+    };
+
+    resetButton.onclick = function () {
+      if (isModalOpen) {
+        return;
+      }
+      jeopardyBoard.innerHTML = "";
+      buildJeopardyBoard(categories, questions);
+    };
+
+    gameControlsDiv.appendChild(resetButton);
+    gameControlsDiv.appendChild(playerName1);
+    gameControlsDiv.appendChild(playerName2);
+    gameControlsDiv.appendChild(submitButton);
+
+    jeopardyBoard.appendChild(gameControlsDiv);
+
+    //END RESET BUTTON AND ALL
   }
 
   //FINISHED JEOPARDY BOX
@@ -124,9 +215,9 @@ document.addEventListener("DOMContentLoaded", function () {
       categories = data.map(
         (categoryData) =>
           new Category(
-            categoryData["id"],
-            categoryData["title"],
-            categoryData["clues_count"]
+            categoryData.id,
+            categoryData.title,
+            categoryData.cluesCount
           )
       );
 
@@ -143,10 +234,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const firstFiveElements = questions.slice(0, 5);
             const modelFiveElements = firstFiveElements.map((question) => {
               return new Question(
-                question["id"],
-                question["answer"],
-                question["question"],
-                question["category_id"]
+                question.id,
+                question.answer,
+                question.question,
+                question.categoryId
               );
             });
             return {
@@ -166,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
       buildJeopardyBoard(categories, questionsArray);
     })
     .catch((error) => {
-      console.error("Error fetching data:", error);
+      // console.error("Error fetching data:", error);
       // Handle the error in a centralized way
     });
 });

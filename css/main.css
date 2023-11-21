@@ -85,6 +85,11 @@ header {
   font-size: 20px;
   user-select: none;
 }
+/* CSS selector which selects elements that have both question and highlighted classes */
+.question.highlighted {
+  border: 4px solid #48cae4; /* Change to the border color you prefer for highlighting */
+  transition: border 0.5s ease; /* Adjust the duration of the highlight effect */
+}
 header {
   display: flex;
   align-items: center;
@@ -100,10 +105,12 @@ img {
   height: 70px;
   width: 90px;
 }
-.question:not(.categoryName, .question-clicked):hover {
+
+#jeopardy-board:not(.modal-open)
+  .question:not(.categoryName, .question-clicked):hover {
   border: #c59d0a solid 4px;
 }
-.question-clicked:hover {
+#jeopardy-board.modal-open .question:hover {
   cursor: default;
 }
 

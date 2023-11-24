@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const playerName2 = document.createElement("input");
       playerName2.setAttribute("type", "text");
       playerName2.style.height = "50px";
-      playerName1.setAttribute("id", "p2");
+      playerName2.setAttribute("id", "p2");
 
       playerName2.setAttribute("placeholder", "Player 2");
   

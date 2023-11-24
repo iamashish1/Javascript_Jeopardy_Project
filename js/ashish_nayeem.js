@@ -154,11 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
       resetButton.style.borderRadius = "5px";
       resetButton.style.border = "none";
       buttonDiv.appendChild(resetButton);
-      // centreButton();
-  
-  
-  
-  
+    
       //create input fields for player names
       const playerName1 = document.createElement("input");
       playerName1.setAttribute("type", "text");

@@ -72,14 +72,18 @@ header {
   margin-bottom: 20px;
 }
 #jeopardy-board {
+  /* background-image: url(assets/jeopardy2.jpg); */
   display: flex;
   justify-content: center;
   grid-template-columns: repeat(6, 1fr);
   gap: 10px;
   animation: fadeIn 1s ease-in-out;
 }
-
+/* .modal-open{
+  background-image: url(assets/jeopardy2.jpg);
+} */
 .category {
+  /* background: url(assets/jeopardy2.jpg) no-repeat; */
   flex: 1;
   max-width: 150px;
   text-align: center;
@@ -136,6 +140,7 @@ img {
   font-size: 25px;
 }
 .loader-container {
+  background: url(assets/jeopardy2.jpg) no-repeat;
   display: flex;
   justify-content: center;
 }

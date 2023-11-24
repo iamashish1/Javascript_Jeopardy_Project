@@ -127,72 +127,79 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //RESET BUTTON AND ALL with IIFE
 
-    (function (){
+    (function () {
+      if (document.getElementById("button-div") == null) {
+        const gameControlsDiv = document.createElement("div");
+        const buttonDiv = document.createElement("div");
 
-      if(document.getElementById('button-div')==null){
-      const gameControlsDiv = document.createElement("div");
-      const buttonDiv = document.createElement("div");
-      
+        gameControlsDiv.classList.add("control-div");
 
+        buttonDiv.setAttribute("id", "button-div");
+        const resetButton = document.createElement("button");
 
-      gameControlsDiv.classList.add("control-div");
-  
-  
-      buttonDiv.setAttribute('id','button-div');
-      const resetButton = document.createElement("button");
-  
-    
-      resetButton.innerHTML = "RESET";
-      resetButton.style.height = "50px";
-      resetButton.style.width = "100px";
-      resetButton.style.margin = "auto";
-  
-      resetButton.style.background = "purple";
-      resetButton.style.color = "white";
-      // resetButton.style.position = "absolute";
-  
-      resetButton.style.borderRadius = "5px";
-      resetButton.style.border = "none";
-      buttonDiv.appendChild(resetButton);
-    
-      //create input fields for player names
-      const playerName1 = document.createElement("input");
-      playerName1.setAttribute("type", "text");
-      playerName1.style.marginRight = "10px";
-      playerName1.style.height = "50px";
-      playerName1.setAttribute("id", "p1");
+        resetButton.innerHTML = "RESET";
+        resetButton.style.height = "50px";
+        resetButton.style.width = "100px";
+        resetButton.style.margin = "auto";
 
-      playerName1.setAttribute("placeholder", "Player 1");
-  
-      const playerName2 = document.createElement("input");
-      playerName2.setAttribute("type", "text");
-      playerName2.style.height = "50px";
-      playerName2.setAttribute("id", "p2");
+        resetButton.style.background = "purple";
+        resetButton.style.color = "white";
+        // resetButton.style.position = "absolute";
 
-      playerName2.setAttribute("placeholder", "Player 2");
-  
-      resetButton.onclick = function () {
-        if (isModalOpen) {
-          return;
-        }
-        jeopardyBoard.innerHTML = "";
-  
-        buildJeopardyBoard(categories, questions);
-      };
-  
-      // gameControlsDiv.appendChild(resetButton);
-      gameControlsDiv.appendChild(playerName1);
-      gameControlsDiv.appendChild(playerName2);
-  
-      document.getElementById('body-id').insertBefore(gameControlsDiv, document.getElementById('body-id').lastElementChild);
-      document.getElementById('body-id').insertBefore(buttonDiv, document.getElementById('body-id').lastElementChild);
-    }else if(document.getElementById('p1')!=null&&document.getElementById('p2')){
-      document.getElementById('p1').value= " ";
-      document.getElementById('p2').value= " ";
+        resetButton.style.borderRadius = "5px";
+        resetButton.style.border = "none";
+        buttonDiv.appendChild(resetButton);
 
-    }
-      })();
-  
+        //create input fields for player names
+        const playerName1 = document.createElement("input");
+        playerName1.setAttribute("type", "text");
+        playerName1.style.marginRight = "10px";
+        playerName1.style.height = "50px";
+        playerName1.setAttribute("id", "p1");
+
+        playerName1.setAttribute("placeholder", "Player 1");
+
+        const playerName2 = document.createElement("input");
+        playerName2.setAttribute("type", "text");
+        playerName2.style.height = "50px";
+        playerName2.setAttribute("id", "p2");
+
+        playerName2.setAttribute("placeholder", "Player 2");
+
+        resetButton.onclick = function () {
+          if (isModalOpen) {
+            return;
+          }
+          jeopardyBoard.innerHTML = "";
+
+          buildJeopardyBoard(categories, questions);
+        };
+
+        // gameControlsDiv.appendChild(resetButton);
+        gameControlsDiv.appendChild(playerName1);
+        gameControlsDiv.appendChild(playerName2);
+
+        document
+          .getElementById("body-id")
+          .insertBefore(
+            gameControlsDiv,
+            document.getElementById("body-id").lastElementChild
+          );
+        document
+          .getElementById("body-id")
+          .insertBefore(
+            buttonDiv,
+            document.getElementById("body-id").lastElementChild
+          );
+      } else if (
+        document.getElementById("p1") != null &&
+        document.getElementById("p2")
+      ) {
+        document.getElementById("p1").value = " ";
+        document.getElementById("p2").value = " ";
+      }
+    })();
+
     //END RESET BUTTON AND ALL
   }
 
@@ -263,5 +270,3 @@ function hideLoadingSpinner() {
   const loaderContainer = document.querySelector(".loader-container");
   loaderContainer.remove();
 }
-
-

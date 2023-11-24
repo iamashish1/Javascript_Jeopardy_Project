@@ -1,6 +1,18 @@
 * {
   box-sizing: border-box;
 }
+.body-id,.control-div{
+  margin-top: 20px;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+#button-div{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+
+}
 .modal-container {
   position: fixed;
   top: 50%;
@@ -62,6 +74,9 @@ header {
 #jeopardy-board {
   display: flex;
   justify-content: center;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  animation: fadeIn 1s ease-in-out;
 }
 
 .category {

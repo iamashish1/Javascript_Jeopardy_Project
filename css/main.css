@@ -104,10 +104,9 @@ header {
   user-select: none;
 }
 
-/* CSS selector which selects elements that have both question and highlighted classes */
 .question.highlighted {
   background-color: #ffff00;
-  border: 6px solid white; /* Change to the border color you prefer for highlighting */
+  border: 6px solid white; 
   transition: border 0.5s ease-in-out;
 
 }
@@ -127,6 +126,11 @@ header :last-child {
 }
 
 img {
+  height: 40px;
+  width: 40px;
+}
+
+.header-img{
   height: 70px;
   width: 120px;
 }
@@ -168,3 +172,17 @@ img {
     transform: rotate(360deg);
   }
 }
+
+.avatar {
+  margin: 2px;
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /* border: 4px solid transparent;  */
+  /* Set an initial transparent border */
+  
+
+}
+
+

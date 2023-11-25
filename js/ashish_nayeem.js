@@ -2,7 +2,10 @@ import Category from "./model/category_model.js";
 import Question from "./model/question_model.js";
 
 // Add the variable here
-let isModalOpen = false;
+var isModalOpen = false;
+var currentPlayer = 1;
+var score1 = 0;
+var score2 = 0;
 document.addEventListener("DOMContentLoaded", function () {
   let categories;
   let questionsArray = [];
@@ -29,13 +32,47 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalContent = document.createElement("div");
     modalContent.classList.add("modal-content");
 
+
+
+
     // Create elements to display question and answer
     const questionElement = document.createElement("p");
     questionElement.textContent = `Question: ${question}`;
 
     // Create covered surface with "Show Answer" button
     const coveredSurface = document.createElement("div");
+    coveredSurface.style.display = 'flex';
+    coveredSurface.style.justifyContent = 'center';
+    coveredSurface.style.alignItems = 'center';
+
     coveredSurface.classList.add("covered-surface");
+    //
+    const rightAnswer = document.createElement('button');
+
+
+    rightAnswer.innerHTML = '<img src="assets/right.png" width:"20px" alt="Right Answer">';
+
+    rightAnswer.onclick = function() {
+      handleAnswerSubmit(100, true);
+            // Set the modal state to closed
+            isModalOpen = false;
+            // Remove the highlight class when the answer is shown
+            questionDiv.classList.remove("highlighted");
+            modalContainer.remove();
+    };
+
+
+
+    const wrongAnswer = document.createElement('button');
+    wrongAnswer.innerHTML = '<img src="assets/Wrong.png" alt="Wrong Answer">';
+    wrongAnswer.onclick = function() {
+      handleAnswerSubmit(100, false);
+            // Set the modal state to closed
+            isModalOpen = false;
+            // Remove the highlight class when the answer is shown
+            questionDiv.classList.remove("highlighted");
+            modalContainer.remove();
+    };
 
     const showAnswerButton = document.createElement("button");
     showAnswerButton.textContent = "Show Answer";
@@ -45,7 +82,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // Remove the highlight class when the answer is shown
       questionDiv.classList.remove("highlighted");
       // Replace covered surface with the answer
+
       coveredSurface.innerHTML = `<p>Answer: ${answer}</p>`;
+      coveredSurface.appendChild(wrongAnswer);
+      coveredSurface.insertBefore(rightAnswer, coveredSurface.firstElementChild);
+
       questionDiv.classList.add("question-clicked");
     });
 
@@ -175,9 +216,46 @@ document.addEventListener("DOMContentLoaded", function () {
           buildJeopardyBoard(categories, questions);
         };
 
-        // gameControlsDiv.appendChild(resetButton);
+        //sscores texts 
+
+        const player1Score = document.createElement("p");
+        player1Score.setAttribute("id", "player-1")
+
+        player1Score.innerHTML = score1;
+        player1Score.style.color = 'white';
+        player1Score.style.marginRight = '10px';
+
+
+        const player2Score = document.createElement("p");
+        player2Score.setAttribute("id", "player-2")
+        player2Score.innerHTML = score2;
+        player2Score.style.color = 'white';
+        player2Score.style.marginLeft = '10px';
+
+        //Circle avatars to the div 
+
+        let avatar1 = document.createElement('img');
+
+        avatar1.classList.add('avatar');
+        avatar1.setAttribute('id','avatar1');
+        avatar1.style.border="4px solid green"
+
+        avatar1.src = 'assets/player.png';
+        let avatar2 = document.createElement('img');
+        avatar2.classList.add('avatar');
+        avatar2.setAttribute('id','avatar2');
+
+        avatar2.src = 'assets/player2.png';
+
+
+        gameControlsDiv.appendChild(player1Score);
+
+        gameControlsDiv.appendChild(avatar1);
+
         gameControlsDiv.appendChild(playerName1);
         gameControlsDiv.appendChild(playerName2);
+        gameControlsDiv.appendChild(avatar2);
+        gameControlsDiv.appendChild(player2Score);
 
         document
           .getElementById("body-id")
@@ -195,8 +273,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("p1") != null &&
         document.getElementById("p2")
       ) {
-        document.getElementById("p1").value = " ";
-        document.getElementById("p2").value = " ";
+        document.getElementById("p1").value = null;
+        document.getElementById("p2").value = null;
       }
     })();
 
@@ -269,4 +347,58 @@ document.addEventListener("DOMContentLoaded", function () {
 function hideLoadingSpinner() {
   const loaderContainer = document.querySelector(".loader-container");
   loaderContainer.remove();
+}
+
+function handleAnswerSubmit(score, isCorrect) {
+
+
+  //Update the score based on player number
+
+
+  //at last switch the player number
+  if (currentPlayer == 1) {
+    let player1 = document.getElementById("player-1");
+
+    let current = parseInt(player1.innerHTML);
+    console.log('why not if'+ isCorrect + current +score)
+
+    let upadtedOne;
+    if (isCorrect) {
+      upadtedOne = current + score;
+
+    } else {
+      upadtedOne = current - score;
+    }
+
+    player1.innerHTML = '';
+    player1.innerHTML = upadtedOne;
+
+
+    currentPlayer = 2;
+    document.getElementById('avatar1').style.border="none";
+
+    document.getElementById('avatar2').style.border="4px solid green";
+  } else if (currentPlayer == 2) {
+    let player2 = document.getElementById("player-2");
+    let current = parseInt(player2.innerHTML);
+    let upadtedOne;
+    if (isCorrect) {
+      upadtedOne = current + score;
+
+    } else {
+      upadtedOne = current - score;
+    }
+
+
+
+    player2.innerHTML = '';
+    player2.innerHTML = upadtedOne;
+
+    currentPlayer = 1;
+    document.getElementById('avatar2').style.border="none";
+
+     document.getElementById('avatar1').style.border="4px solid green";
+  }
+
+
 }

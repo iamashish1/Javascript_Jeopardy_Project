@@ -126,6 +126,20 @@ header {
   transition: border 0.5s ease-in-out;
 
 }
+.avatar-transition {
+  transition: border 0.5s ease-in-out; /* You can adjust the duration and timing function as needed */
+  animation: blink 2s infinite alternate-reverse;
+}
+@keyframes blink {
+  0%{
+    border: solid 7px green;
+  }
+
+  100%{
+    border: solid 2px green;
+  }
+  
+}
 
 header {
   display: flex;

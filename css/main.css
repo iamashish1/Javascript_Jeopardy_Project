@@ -117,8 +117,11 @@ header {
   user-select: none;
 }
 
+
+
 .question.highlighted {
   background-color: #ffff00;
+  /* sad */
   border: 6px solid white;
   transition: border 0.5s ease-in-out;
 

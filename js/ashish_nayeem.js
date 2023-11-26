@@ -7,14 +7,19 @@ var currentPlayer = 1;
 var score1 = 0;
 var score2 = 0;
 var isNameSet = false;
-var initialHighScore=0;
+var initialHighScore = 0;
 document.addEventListener("DOMContentLoaded", function () {
   let categories;
   let questionsArray = [];
 
   //FINISHED ALERT BOX
   // MODAL BOX
-  function showQuestionWithInstruction(question, answer, questionDiv) {
+  function showQuestionWithInstruction(
+    question,
+    answer,
+    questionDiv,
+    questionPoint
+  ) {
     // Check if the question has already been clicked
     if (
       questionDiv.classList.contains("question-clicked") ||
@@ -55,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
     rightAnswer.innerHTML = '<img src="assets/right.png" alt="Right Answer">';
 
     rightAnswer.onclick = function () {
-      handleAnswerSubmit(100, true);
+      handleAnswerSubmit(questionPoint, true);
       // Set the modal state to closed
       isModalOpen = false;
       // Remove the highlight class when the answer is shown
@@ -67,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     wrongAnswer.innerHTML = '<img src="assets/Wrong.png" alt="Wrong Answer">';
     wrongAnswer.onclick = function () {
-      handleAnswerSubmit(100, false);
+      handleAnswerSubmit(questionPoint, false);
       // Set the modal state to closed
       isModalOpen = false;
       // Remove the highlight class when the answer is shown
@@ -128,6 +133,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function buildJeopardyBoard(categories, questions) {
     const jeopardyBoard = document.getElementById("jeopardy-board");
 
+    //GET HIGH SCORE FROM COOKIE WHEN LOADED
+    let getFromCookie = readCookie();
+
+    document.getElementById("high_score_id").innerHTML = "";
+    document.getElementById(
+      "high_score_id"
+    ).innerHTML = `High Score: ${getFromCookie}`;
     // Loop through categories
     categories.forEach((category) => {
       // Create a category div
@@ -159,7 +171,8 @@ document.addEventListener("DOMContentLoaded", function () {
             showQuestionWithInstruction(
               question.question,
               question.answer,
-              questionDiv
+              questionDiv,
+              100 * (i + 1)
             );
           }
         };
@@ -230,7 +243,6 @@ document.addEventListener("DOMContentLoaded", function () {
             newlyCreated1.style.color = "green";
             newlyCreated1.style.marginRight = "10px";
             newlyCreated1.style.marginLeft = "10px";
-            newlyCreated1.style.width = "inherit";
             document.getElementById("p2").value = null;
             document.getElementById("p1").value = null;
 
@@ -252,24 +264,10 @@ document.addEventListener("DOMContentLoaded", function () {
         playerName2.setAttribute("id", "p2");
 
         playerName2.setAttribute("placeholder", "Player 2");
-        //create set suffix button for player1
+        //CREATE A SET BUTTON
         let suffix2 = document.createElement("span");
         suffix2.style.backgroundColor = "red";
         suffix2.style.color = "white";
-
-        //  suffix2.innerHTML='SET'
-        //  suffix2.addEventListener('click', function() {
-        //   // Add your logic here
-        //   let getWhatsInside2= document.getElementById('p2').value;
-        //   if(getWhatsInside2!=''){
-        //     let newlyCreated2= document.createElement('span');
-        //     newlyCreated2.innerHTML= ' '+getWhatsInside2+' ';
-        //     newlyCreated2.style.color='green'
-        //     gameControlsDiv.replaceChild( newlyCreated2, document.getElementById('p2'));
-        //     suffix2.remove();
-        //   }
-
-        // });
 
         resetButton.onclick = function () {
           if (isModalOpen) {
@@ -286,12 +284,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if (isNameSet) {
             document.getElementById("playervsplayer").remove();
-            suffix1.style.display = "block"
-          }else{
-            
-
+            suffix1.style.display = "block";
+          } else {
           }
-          isNameSet=false;
+          isNameSet = false;
 
           buildJeopardyBoard(categories, questions);
         };
@@ -423,8 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
       buildJeopardyBoard(categories, questionsArray);
     })
     .catch((error) => {
-      // console.error("Error fetching data:", error);
-      // Handle the error in a centralized way
+      throw new Error(`Error fetching data: ${error}`);
     });
 });
 function hideLoadingSpinner() {
@@ -440,11 +435,19 @@ function handleAnswerSubmit(score, isCorrect) {
     let player1 = document.getElementById("player-1");
 
     let current = parseInt(player1.innerHTML);
-    console.log("why not if" + isCorrect + current + score);
 
     let upadtedOne;
     if (isCorrect) {
       upadtedOne = current + score;
+      if (upadtedOne > initialHighScore) {
+        initialHighScore = upadtedOne;
+
+        createCookie(upadtedOne, "PLAYER");
+        document.getElementById("high_score_id").innerHTML = "";
+        document.getElementById(
+          "high_score_id"
+        ).innerHTML = `High Score: ${upadtedOne}`;
+      }
     } else {
       upadtedOne = current - score;
     }
@@ -465,6 +468,16 @@ function handleAnswerSubmit(score, isCorrect) {
     let upadtedOne;
     if (isCorrect) {
       upadtedOne = current + score;
+
+      if (upadtedOne > initialHighScore) {
+        initialHighScore = upadtedOne;
+
+        createCookie(initialHighScore, "PLAYER");
+        document.getElementById("high_score_id").innerHTML = "";
+        document.getElementById(
+          "high_score_id"
+        ).innerHTML = `High Score: ${upadtedOne}`;
+      }
     } else {
       upadtedOne = current - score;
     }
@@ -481,15 +494,22 @@ function handleAnswerSubmit(score, isCorrect) {
   }
 }
 
-function deleteCookie() {
-  document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-}
-
 function readCookie() {
-  let x = document.cookie;
+  let cookie = document.cookie;
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let splittedCookie = decodedCookie.split(";");
+
+  for (let item of splittedCookie) {
+    let findKeyValue = item.split("=");
+    if (findKeyValue[0].trim() === "score") {
+      return parseInt(findKeyValue[1].trim());
+    }
+  }
+  return 0;
 }
 
-function createCookie(score) {
-
-
+function createCookie(score, playerName) {
+  let date = new Date();
+  document.cookie = "score" + "=" + score + ";" + date + ";path=/";
+  document.cookie = "player_name" + "=" + score + ";" + date + ";path=/";
 }
